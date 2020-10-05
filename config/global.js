@@ -1,7 +1,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
 if ( process.env.NODE_ENV === 'dev' ) {
-    process.env.URL_DB = 'mongodb://localhost/covid';
+    process.env.URL_DB = 'mongodb://localhost/chat-server';
 } else {
     process.env.URL_DB = process.env.MONGO_URI || '';
 }
