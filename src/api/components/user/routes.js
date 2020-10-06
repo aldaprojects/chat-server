@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { validateId, validateBody } = require('../middlewares/user_midd');
-const userService = require('../services/user_service');
+const { hasBody, validateId } = require('../../middlewares/global');
 
-router.post('/', validateBody, (req, res) => {
+const { validateBody } = require('./middlewares');
+const userService = require('./services');
+
+router.post('/', [hasBody, validateBody], (req, res) => {
 
     const user = req.body;
 
@@ -48,7 +50,7 @@ router.get('/', validateId, (req, res) => {
     })
 });
 
-router.put('/', validateBody, (req, res) => {
+router.put('/', [hasBody, validateBody], (req, res) => {
 
     const user = req.body;
 

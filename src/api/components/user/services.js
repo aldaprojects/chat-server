@@ -1,4 +1,4 @@
-const User = require('../models/user_model');
+const User = require('./model');
 
 const createUser = (user, callback) => {
     const _user = new User({

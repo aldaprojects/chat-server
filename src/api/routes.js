@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
 
-app.use('/user', require('./user_route') );
+app.use( require('./components/user/routes') );
 
 module.exports = app;
