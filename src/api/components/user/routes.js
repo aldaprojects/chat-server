@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { hasBody, validateId } = require('../../middlewares/global');
 
-const { validateBody } = require('./middlewares');
+const { validateBody, validateLogin } = require('./middlewares');
 const userService = require('./services');
 
 router.post('/', [hasBody, validateBody], (req, res) => {
@@ -12,10 +12,12 @@ router.post('/', [hasBody, validateBody], (req, res) => {
 
     userService.createUser(user, (err, newUser) => {
         if( err ) {
+            console.log(err)
             return res.status(err.status).json({
                 ok: false,
                 error: err.message,
-                body: null
+                body: null,
+                error_code: err.error_code
             });
         }
 
@@ -23,6 +25,31 @@ router.post('/', [hasBody, validateBody], (req, res) => {
             ok: true,
             error: null,
             body: newUser
+        });
+
+    });
+
+});
+
+router.post('/login', [hasBody, validateLogin], (req, res) => {
+
+    const user = req.body;
+
+    userService.login(user, (err, userDB) => {
+        if( err ) {
+            console.log(err)
+            return res.status(err.status).json({
+                ok: false,
+                error: err.message,
+                body: null,
+                error_code: err.error_code
+            });
+        }
+        console.log(userDB)
+        return res.status(200).json({
+            ok: true,
+            error: null,
+            body: userDB
         });
 
     });
@@ -38,7 +65,8 @@ router.get('/', validateId, (req, res) => {
             return res.status(err.status).json({
                 ok: false,
                 error: err.message,
-                body: null
+                body: null,
+                error_code: err.error_code
             });
         }
 
@@ -50,17 +78,20 @@ router.get('/', validateId, (req, res) => {
     })
 });
 
-router.put('/', [hasBody, validateBody], (req, res) => {
+router.put('/', [validateId, hasBody, validateBody], (req, res) => {
 
     const user = req.body;
+    user.id = req.query.id;
 
+    console.log('put', user)
 
     userService.updateUser(user, (err, newUser) => {
         if( err ) {
             return res.status(err.status).json({
                 ok: false,
                 error: err.message,
-                body: null
+                body: null,
+                error_code: err.error_code
             });
         }
 
@@ -81,7 +112,8 @@ router.delete('/', validateId, (req, res) => {
             return res.status(err.status).json({
                 ok: false,
                 error: err.message,
-                body: null
+                body: null,
+                error_code: err.error_code
             });
         }
 

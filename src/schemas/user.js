@@ -6,7 +6,8 @@ let usuarioSchma = new Schema({
     email: { unique: true, type: String, },
     password: { type: String },
     username: { type: String },
-    img: { type: String, require: false }
+    img: { type: String, require: false },
+    connected: { type: Boolean, default: false }
 });
 
 usuarioSchma.methods.toJSON = function() {

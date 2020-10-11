@@ -5,14 +5,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 const socketio = require('socket.io');
+const cors = require('cors')
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// module.exports.io = io;
-// require('../services/sockets');
+module.exports.io = io;
+require('./sockets/socket');
 
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use( require('./api/routes') );
