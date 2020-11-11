@@ -49,11 +49,7 @@ io.on('connect', socket => {
 
         await Message.create(message);
 
-        const messages = await Message.find({})
-            .sort({date: 1})
-            .exec();
-
-        io.to('chat-room').emit('messages', messages);
+        await updateMsgs();
     });
 
     socket.on('disconnect', async () => {
@@ -72,6 +68,16 @@ io.on('connect', socket => {
             }
         }
     });
-
-
 });
+
+const updateMsgs = async () => {
+    const messages = await Message.find({})
+        .sort({date: 1})
+        .exec();
+
+    io.to('chat-room').emit('messages', messages);
+}
+
+module.exports = {
+    updateMsgs
+}

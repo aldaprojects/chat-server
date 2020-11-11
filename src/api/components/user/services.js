@@ -94,6 +94,28 @@ const getUser = (id, callback) => {
     });
 }
 
+const getUsers = (callback) => {
+    User.find({}, (err, users) => {
+        if( err ) {
+            return callback({
+                status: 500,
+                message: 'Internal Server Error',
+                error_code: error.internalerror
+            }, null);
+        }
+
+        if( users.length === 0 ) {
+            return callback({
+                status: 404,
+                message: 'users not found',
+                error_code: error.usernotfound
+            }, null);
+        }
+
+        return callback(null, users)
+    });
+}
+
 const updateUser = (user, callback) => {
     const _user = new User({
         _id: user.id,
@@ -159,5 +181,6 @@ module.exports = {
     getUser,
     updateUser,
     deleteUser,
-    login
+    login,
+    getUsers
 }

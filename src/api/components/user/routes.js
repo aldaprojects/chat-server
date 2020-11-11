@@ -78,6 +78,26 @@ router.get('/', validateId, (req, res) => {
     })
 });
 
+router.get('/all', (req, res) => {
+
+    userService.getUsers((err, users) => {
+        if( err ) {
+            return res.status(err.status).json({
+                ok: false,
+                error: err.message,
+                body: null,
+                error_code: err.error_code
+            });
+        }
+
+        return res.status(200).json({
+            ok: true,
+            error: null,
+            body: users
+        });
+    })
+});
+
 router.put('/', [validateId, hasBody, validateBody], (req, res) => {
 
     const user = req.body;
